@@ -87,6 +87,7 @@
 	min: slider_pos.min
 	max: slider_pos.max
 	btn_text: btn.text
+	display_temp_text: temp_display.text
 
 	Label:
 		id: slider_label
@@ -103,7 +104,7 @@
 		size_hint_x: .1
 	Label:
 		id: temp_display
-		text: str(slider_pos.value)
+		text: root.display_temp_text
 		size_hint_x: .1
 	Button:
 		size_hint_x: .1
@@ -120,16 +121,18 @@
 		BoxLayout:
 			size_hint_y: .2
 			orientation: 'vertical'
-			Slider_pos:
+			Temperature_Widget:
 				text: 'Nozzle'
 				min: 0
 				max: 250
 				btn_text: 'Nozzle'
-			Slider_pos:
+				display_temp_text: str(root.temperature["nozzle"])
+			Temperature_Widget:
 				text: 'Bed'
 				min: 0
 				max: 70
 				btn_text: 'Bed'
+				display_temp_text: str(root.temperature["bed"])
 		Button:
 			size_hint_y: .1
 			text: 'Back to menu'

@@ -1,7 +1,8 @@
-
+import re
 from serial import Serial
 
 HOME="G28"
+GET_TEMP="M105"
 
 class Point:
     def __init__(self, x, y):
@@ -25,6 +26,9 @@ class Printer:
             data = self.ser.readline().decode('utf-8')
             if data == "ok\n":
                 stop = True
+            elif data[:2] == "ok": #used to read format of type "ok T:24.34 /0.00 B:24.22 /0.00 @:0 B@:0 " returned from M105
+                stop = True
+                return data[2:]
             else:
                 print(data)
         print("END OF READ")
@@ -63,13 +67,23 @@ class Printer:
         self.write(move)
     
     def set_nozzle_temp(self, pos):
-        print("Nozzle temp: "+str(pos))
         temperature = "M104 S"+str(pos)
         self.write(temperature)
 
     def set_bed_temp(self, pos):
         temperature = "M140 S"+str(pos)
         self.write(temperature)
+
+    def get_temp(self):
+        try:
+            self.write(GET_TEMP)
+            data = self.read()
+            nozzle_temp = re.search(r'T:\d+.\d+', data).group(0)[2:]                                                            
+            bed_temp = re.search(r'B:\d+.\d+', data).group(0)[2:]
+        except TypeError:
+            nozzle_temp = 0
+            bed_temp = 0
+        return (nozzle_temp, bed_temp)
 
     def get_pos(self):
         self.write('M114')
