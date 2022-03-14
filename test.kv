@@ -1,0 +1,78 @@
+#:kivy 1.0
+
+<Slider_pos@BoxLayout>
+	text: slider_label.text
+	min: slider_pos.min
+	max: slider_pos.max
+	btn_text: btn.text
+
+	Label:
+		id: slider_label
+		text: root.text
+		size_hint_x: .1
+	Slider:
+		id: slider_pos
+		min: root.min
+		max: root.max
+		step: 1
+	Label:
+		id: slider_display
+		text: str(slider_pos.value)
+		size_hint_x: .1
+	Button:
+		size_hint_x: .1
+		id: btn
+		text: root.btn_text
+		on_press: root.dispatch('on_press', *args)
+
+GuiPrinter:
+	BoxLayout:
+		orientation: 'vertical'
+
+		BoxLayout:
+			size_hint_y: .2
+			orientation: 'vertical'
+			Slider_pos:
+				text: 'X'
+				min: 0
+				max: 300
+				btn_text: 'X'
+			Slider_pos:
+				text: 'Y'
+				min: 0
+				max: 300
+				btn_text: 'Y'
+			Slider_pos:
+				text: 'Z'
+				min: 0
+				max: 400
+				btn_text: 'Z'
+		BoxLayout:
+			BoxLayout:
+				orientation: 'vertical'
+				Button:
+					id: left_back
+					text: 'Left back'
+					on_press: root.btn_left_back()
+				Button:
+					id: left_front
+					text: 'Left front'
+					on_press: root.btn_left_front()
+
+			BoxLayout:
+				orientation: 'vertical'
+				Button:
+					id: right_back
+					text: 'Right back'
+					on_press: root.btn_right_back()
+				Button:
+					id: right_front
+					text: 'Right front'
+					on_press: root.btn_right_front()
+
+		Button:
+			size_hint_y: .1
+			id: id_btn_home
+			text: 'HOME'
+			on_press: root.btn_home()
+
