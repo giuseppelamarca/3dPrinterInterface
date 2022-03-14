@@ -62,6 +62,15 @@ class Printer:
         move = "G1 Z"+str(pos)
         self.write(move)
     
+    def set_nozzle_temp(self, pos):
+        print("Nozzle temp: "+str(pos))
+        temperature = "M104 S"+str(pos)
+        self.write(temperature)
+
+    def set_bed_temp(self, pos):
+        temperature = "M140 S"+str(pos)
+        self.write(temperature)
+
     def get_pos(self):
         self.write('M114')
         self.read()

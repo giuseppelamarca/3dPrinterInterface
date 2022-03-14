@@ -13,6 +13,7 @@ contains a root Widget.
                                                                                                                             
 import kivy                                                                                                                 
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.screenmanager import ScreenManager, Screen
 from printer import Printer
 kivy.require('1.0.7')                                                                                                       
                                                                                                                             
@@ -39,8 +40,12 @@ class Slider_pos(BoxLayout):
             printer.move_y_absolute(move)
         elif self.ids['btn'].text == 'Z':
             printer.move_z_absolute(move)
+        elif self.ids['btn'].text == 'Nozzle':
+            printer.set_nozzle_temp(move)
+        elif self.ids['btn'].text == 'Bed':
+            printer.set_bed_temp(move)
 
-class GuiPrinter(BoxLayout):                                                                                                
+class GuiPrinter(Screen, BoxLayout):                                                                                                
 
     def btn(self):                                                                                                          
         print("General function")                                                                                           
@@ -79,9 +84,23 @@ class GuiPrinter(BoxLayout):
         print("go home")
         printer.home()
                                                                                                                                     
-class TestApp(App):                                                                                                         
-    pass                                                                                                                    
+#class TestApp(App):                                                                                                         
+#    pass                                                                                                                    
                                                                                                                             
                                                                                                                             
-if __name__ == '__main__':                                                                                                  
-    TestApp().run() 
+
+class SettingsScreen(Screen):
+    pass
+
+class TestApp(App):
+
+    def build(self):
+        # Create the screen manager
+        sm = ScreenManager()
+        sm.add_widget(GuiPrinter(name='main_view'))
+        sm.add_widget(SettingsScreen(name='settings'))
+
+        return sm
+
+if __name__ == '__main__':
+    TestApp().run()

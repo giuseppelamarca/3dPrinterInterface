@@ -25,7 +25,7 @@
 		text: root.btn_text
 		on_press: root.dispatch('on_press', *args)
 
-GuiPrinter:
+<GuiPrinter@BoxLayout>:
 	BoxLayout:
 		orientation: 'vertical'
 
@@ -70,9 +70,70 @@ GuiPrinter:
 					text: 'Right front'
 					on_press: root.btn_right_front()
 
+		BoxLayout:
+			size_hint_y: .1
+			Button:
+				id: id_btn_home
+				text: 'HOME'
+				on_press: root.btn_home()
+			Button:
+				size_hint_x: .1
+				id: id_btn_settings
+				text: 'Settings'
+				on_press:
+					root.manager.current = 'settings'
+<Temperature_Widget@BoxLayout>
+	text: slider_label.text
+	min: slider_pos.min
+	max: slider_pos.max
+	btn_text: btn.text
+
+	Label:
+		id: slider_label
+		text: root.text
+		size_hint_x: .1
+	Slider:
+		id: slider_pos
+		min: root.min
+		max: root.max
+		step: 1
+	Label:
+		id: slider_display
+		text: str(slider_pos.value)
+		size_hint_x: .1
+	Label:
+		id: temp_display
+		text: str(slider_pos.value)
+		size_hint_x: .1
+	Button:
+		size_hint_x: .1
+		id: btn
+		text: root.btn_text
+		on_press: root.dispatch('on_press', *args)
+
+
+
+
+<SettingsScreen>:
+	BoxLayout:
+		orientation: 'vertical'
+		BoxLayout:
+			size_hint_y: .2
+			orientation: 'vertical'
+			Slider_pos:
+				text: 'Nozzle'
+				min: 0
+				max: 250
+				btn_text: 'Nozzle'
+			Slider_pos:
+				text: 'Bed'
+				min: 0
+				max: 70
+				btn_text: 'Bed'
 		Button:
 			size_hint_y: .1
-			id: id_btn_home
-			text: 'HOME'
-			on_press: root.btn_home()
+			text: 'Back to menu'
+			on_press:
+				root.manager.transition.direction = 'right'
+				root.manager.current = 'main_view'
 
