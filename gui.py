@@ -42,6 +42,10 @@ class Slider_pos(BoxLayout):
             printer.move_y_absolute(move)
         elif self.ids['btn'].text == 'Z':
             printer.move_z_absolute(move)
+        elif self.ids['btn'].text == 'E':
+            printer.move_extruder(move)
+        elif self.ids['btn'].text == 'FeedRate':
+            printer.set_feedrate(move)
         elif self.ids['btn'].text == 'Nozzle':
             printer.set_nozzle_temp(move)
         elif self.ids['btn'].text == 'Bed':
@@ -111,9 +115,9 @@ class SettingsScreen(Screen):
         if (nozzle != 0 or bed != 0):
             self.temperature["nozzle"] = round(float(nozzle))
             self.temperature["bed"] = round(float(bed))
-            print(self.temperature["nozzle"])
-            print(self.temperature["bed"])
 
+class ExtrusionScreen(Screen):
+    pass
 
 class TestApp(App):
 
@@ -122,9 +126,11 @@ class TestApp(App):
         sm = ScreenManager()
         gui_printer = GuiPrinter(name='main_view')
         settings_screen = SettingsScreen(name='settings')
+        extrusion_screen = ExtrusionScreen(name='extrusion')
         sm.add_widget(gui_printer)
         sm.add_widget(settings_screen)
-        Clock.schedule_interval(settings_screen.temperature_display, 2)
+        sm.add_widget(extrusion_screen)
+        Clock.schedule_interval(settings_screen.temperature_display, 3)
 
         return sm
 

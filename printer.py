@@ -2,6 +2,11 @@ import re
 from serial import Serial
 
 HOME="G28"
+ABSOLUTE_POS="G90"
+RELATIVE_POS="G91"
+FLOWRATE_BASE="M221 S"  #flowrate percentage
+FEEDRATE_BASE="M203 E"  #max feedrate
+
 GET_TEMP="M105"
 
 class Point:
@@ -37,33 +42,38 @@ class Printer:
         self.write(HOME)
 
     def move_x(self, pos):
-        self.write('G91')
+        self.write(RELATIVE_POS)
         move = "G0 X"+str(pos)
         self.write(move)
 
     def move_y(self, pos):
-        self.write('G91')
+        self.write(RELATIVE_POS)
         move = "G0 Y"+str(pos)
         self.write(move)
 
     def move_z(self, pos):
-        self.write('G91')
+        self.write(RELATIVE_POS)
         move = "G0 Z"+str(pos)
         self.write(move)
     
     def move_x_absolute(self, pos):
-        self.write('G90')
+        self.write(ABSOLUTE_POS)
         move = "G1 X"+str(pos)
         self.write(move)
 
     def move_y_absolute(self, pos):
-        self.write('G90')
+        self.write(ABSOLUTE_POS)
         move = "G1 Y"+str(pos)
         self.write(move)
 
     def move_z_absolute(self, pos):
-        self.write('G90')
+        self.write(ABSOLUTE_POS)
         move = "G1 Z"+str(pos)
+        self.write(move)
+
+    def move_extruder(self, pos):
+        self.write(RELATIVE_POS)
+        move = "G0 E"+str(pos)
         self.write(move)
     
     def set_nozzle_temp(self, pos):
@@ -73,6 +83,10 @@ class Printer:
     def set_bed_temp(self, pos):
         temperature = "M140 S"+str(pos)
         self.write(temperature)
+
+    def set_feedrate(self, pos):
+        feedrate = FEEDRATE_BASE+str(pos)
+        self.write(feedrate)
 
     def get_temp(self):
         try:

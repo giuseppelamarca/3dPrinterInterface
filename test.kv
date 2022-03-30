@@ -5,6 +5,7 @@
 	min: slider_pos.min
 	max: slider_pos.max
 	btn_text: btn.text
+	step: slider_pos.step
 
 	Label:
 		id: slider_label
@@ -14,10 +15,10 @@
 		id: slider_pos
 		min: root.min
 		max: root.max
-		step: 1
+		step: root.step
 	Label:
 		id: slider_display
-		text: str(slider_pos.value)
+		text: str(round(slider_pos.value,2))
 		size_hint_x: .1
 	Button:
 		size_hint_x: .1
@@ -37,16 +38,19 @@
 				min: 0
 				max: 300
 				btn_text: 'X'
+				step: 1
 			Slider_pos:
 				text: 'Y'
 				min: 0
 				max: 300
 				btn_text: 'Y'
+				step: 1
 			Slider_pos:
 				text: 'Z'
 				min: 0
 				max: 400
 				btn_text: 'Z'
+				step: 1
 		BoxLayout:
 			BoxLayout:
 				orientation: 'vertical'
@@ -72,6 +76,12 @@
 
 		BoxLayout:
 			size_hint_y: .1
+			Button:
+				size_hint_x: .1
+				id: id_btn_extrusion
+				text: 'Extrusion'
+				on_press:
+					root.manager.current = 'extrusion'
 			Button:
 				id: id_btn_home
 				text: 'HOME'
@@ -114,6 +124,30 @@
 
 
 
+<ExtrusionScreen>:
+	BoxLayout:
+		orientation: 'vertical'
+		BoxLayout:
+			size_hint_y: .2
+			orientation: 'vertical'
+			Slider_pos:
+				text: 'E'
+				min: -50
+				max: 1000
+				btn_text: 'E'
+				step: 1
+			Slider_pos:
+				text: 'FeedRate'
+				min: 0
+				max: 15
+				btn_text: 'FeedRate'
+				step: 0.1
+		Button:
+			size_hint_y: .1
+			text: 'Back to menu'
+			on_press:
+				root.manager.transition.direction = 'right'
+				root.manager.current = 'main_view'
 
 <SettingsScreen>:
 	BoxLayout:
